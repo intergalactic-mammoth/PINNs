@@ -111,12 +111,12 @@ class PhysicsInformedNN:
         return tf.gradients(g, self.dummy_x1_tf)[0]
     
     def net_U0(self, x):
-        nu = 0.01/np.pi
+        nu = 0.00001 / np.pi
         U1 = self.neural_net(x, self.weights, self.biases)
         U = U1[:,:-1]
         U_x = self.fwd_gradients_0(U, x)
         U_xx = self.fwd_gradients_0(U_x, x)
-        F = -U*U_x + nu*U_xx
+        F = - nu*U_xx
         U0 = U1 - self.dt*tf.matmul(F, self.IRK_weights.T)
         return U0
 
@@ -158,18 +158,18 @@ class PhysicsInformedNN:
     
 if __name__ == "__main__": 
         
-    q = 24
+    q = 100
     layers = [1, 50, 50, 50, q+1]
     lb = np.array([-1.0])
     ub = np.array([1.0])
     
     N = 250
     
-    data = scipy.io.loadmat('../Data/burgers_shock.mat')
+    data = scipy.io.loadmat('../Data/data_heat.mat')
     
-    t = data['t'].flatten()[:,None] # T x 1
-    x = data['x'].flatten()[:,None] # N x 1
-    Exact = np.real(data['usol']).T # T x N
+    t = data['th'].flatten()[:,None] # T x 1
+    x = data['xh'].flatten()[:,None] # N x 1
+    Exact = np.real(data['uh']).T # T x N
     
     idx_t0 = 10
     idx_t1 = 90
@@ -240,7 +240,8 @@ if __name__ == "__main__":
     ax.set_xlabel('$x$')
     ax.set_ylabel('$u(t,x)$')    
     ax.set_title('$t = %.2f$' % (t[idx_t0]), fontsize = 10)
-    ax.set_xlim([lb-0.1, ub+0.1])
+    ax.set_xlim([0,1])
+    ax.set_ylim([0,1])    
     ax.legend(loc='upper center', bbox_to_anchor=(0.8, -0.3), ncol=2, frameon=False)
 
 
@@ -250,12 +251,13 @@ if __name__ == "__main__":
     ax.set_xlabel('$x$')
     ax.set_ylabel('$u(t,x)$')    
     ax.set_title('$t = %.2f$' % (t[idx_t1]), fontsize = 10)    
-    ax.set_xlim([lb-0.1, ub+0.1])
+    ax.set_xlim([0,1])
+    ax.set_ylim([0,1])    
     
     ax.legend(loc='upper center', bbox_to_anchor=(0.1, -0.3), ncol=2, frameon=False)
       
     
-    savefig('./figures/Burgers')  
+    savefig('./figures/Heat')  
     
 
     
