@@ -5,8 +5,13 @@
 import sys
 sys.path.insert(0, '../../Utilities/')
 
+#import tensorflow as tf
 import tensorflow as tf
+tf.compat.v1.disable_v2_behavior()
+
 import numpy as np
+import matplotlib
+matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import scipy.io
 from scipy.interpolate import griddata
@@ -157,6 +162,7 @@ if __name__ == "__main__":
 
     # Doman bounds
     lb = X_star.min(0)
+    print(lb)
     ub = X_star.max(0)    
         
     xx1 = np.hstack((X[0:1,:].T, T[0:1,:].T))
@@ -258,7 +264,7 @@ if __name__ == "__main__":
     ax.set_ylim([-1.1,1.1])    
     ax.set_title('$t = 0.75$', fontsize = 10)
     
-    # savefig('./figures/Burgers')  
+    savefig('./figures/Burgers')  
     
 
 
