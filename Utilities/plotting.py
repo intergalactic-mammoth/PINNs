@@ -8,7 +8,8 @@ Created on Mon Oct  9 20:11:57 2017
 
 import numpy as np
 import matplotlib as mpl
-#mpl.use('pgf')
+
+mpl.use('agg')
 
 def figsize(scale, nplots = 1):
     fig_width_pt = 390.0                          # Get this from LaTeX using \the\textwidth
